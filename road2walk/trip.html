@@ -51,6 +51,17 @@
     }
     #headline { margin: 0 0 2px; font-size: 18px; font-weight: 700; }
     #sub { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    #nav { display: none; margin-top: 14px; }
+    #nav.show { display: block; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+      min-height: 52px; padding: 14px 18px; border-radius: 12px; border: 0; font: inherit; font-weight: 700;
+      font-size: 16px; text-decoration: none; background: var(--yellow); color: var(--charcoal); cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,.18);
+    }
+    .btn:active { transform: translateY(1px); }
+    #nav-more { margin: 10px 0 0; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; justify-content: center; }
+    #nav-more a { color: var(--charcoal); font-weight: 600; text-underline-offset: 3px; }
     #banner {
       display: none; margin-top: 10px; padding: 8px 12px; border-radius: 10px; font-size: 13px;
       background: #fbebc0; color: #7a5600;
@@ -89,6 +100,18 @@
   <footer>
     <p id="headline">Loading trip…</p>
     <p id="sub"></p>
+    <div id="nav">
+      <a id="nav-main" class="btn" target="_blank" rel="noopener noreferrer" href="#">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.7 11.3l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5-3.5 3.5z"/></svg>
+        <span id="nav-main-text">Get directions</span>
+      </a>
+      <p id="nav-more">
+        <span>Starts from your current location.</span>
+        <a id="nav-apple" target="_blank" rel="noopener noreferrer" href="#" hidden>Apple Maps</a>
+        <a id="nav-waze" target="_blank" rel="noopener noreferrer" href="#">Waze</a>
+        <a id="nav-osm" target="_blank" rel="noopener noreferrer" href="#">OpenStreetMap</a>
+      </p>
+    </div>
     <div id="banner" role="status"></div>
   </footer>
 
@@ -278,7 +301,25 @@
         $('recenter').style.display = 'none';
         if (latlngs.length > 1) moveMap(function () { map.fitBounds(line.getBounds(), { padding: [40, 40], maxZoom: 17 }); });
       }
+      updateNav(end, active);
       updateSub();
+    }
+
+    // Directions to the pin. Google Maps opens the route from the viewer's own location by default
+    // (no origin given); the links are built from the numbers only and refreshed as the pin moves.
+    var isApple = /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
+    function updateNav(end, active) {
+      var nav = $('nav');
+      if (!end || !isFinite(end[0]) || !isFinite(end[1])) { nav.classList.remove('show'); return; }
+      var lat = Number(end[0]).toFixed(6), lng = Number(end[1]).toFixed(6);
+      $('nav-main').href = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng + '&travelmode=driving';
+      $('nav-main-text').textContent = active ? 'Get directions to their live location' : 'Get directions to their last location';
+      $('nav-waze').href = 'https://waze.com/ul?ll=' + lat + ',' + lng + '&navigate=yes';
+      $('nav-osm').href = 'https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=%3B' + lat + '%2C' + lng;
+      var apple = $('nav-apple');
+      apple.href = 'https://maps.apple.com/?daddr=' + lat + ',' + lng + '&dirflg=d';
+      apple.hidden = !isApple;
+      nav.classList.add('show');
     }
 
     function updateSub() {
