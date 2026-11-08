@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Live trip | Road2Walk</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+        integrity="sha256-tXCrvaljxgtN5LT/Syb5Mm9T+yzPFGH98JVcoJT7JTk=" crossorigin="anonymous">
+  <style>
+    :root {
+      --charcoal: #474545; --yellow: #f4d04f; --ink: #3b414b; --muted: #8c8c8c;
+      --line: #d9d9d9; --success: #2e9e5b; --danger: #d64545;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: flex; flex-direction: column; background: var(--charcoal); color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    header {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); color: #fff;
+    }
+    .brand { font-weight: 700; font-size: 18px; letter-spacing: -0.2px; }
+    .brand span { color: var(--yellow); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; background: #fff; color: var(--muted);
+    }
+    .pill .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+    .pill.live { color: var(--success); }
+    .pill.live .dot { background: var(--success); animation: pulse 1.2s ease-in-out infinite; }
+    .pill.ended { color: var(--charcoal); }
+    @keyframes pulse { 50% { opacity: .3; } }
+    @media (prefers-reduced-motion: reduce) { .pill.live .dot { animation: none; } }
+
+    #map-wrap { position: relative; flex: 1; min-height: 240px; background: #e8e8e8; }
+    #map { position: absolute; inset: 0; }
+    #recenter {
+      position: absolute; right: 12px; bottom: 28px; z-index: 500; display: none;
+      border: 0; border-radius: 12px; padding: 10px 14px; font: inherit; font-weight: 600; font-size: 14px;
+      background: #fff; color: var(--charcoal); box-shadow: 0 2px 10px rgba(0,0,0,.25); cursor: pointer;
+    }
+    #recenter:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+    footer {
+      background: #fff; border-radius: 24px 24px 0 0; padding: 18px 20px;
+      padding-bottom: max(18px, env(safe-area-inset-bottom)); margin-top: -20px; position: relative; z-index: 600;
+      box-shadow: 0 -4px 16px rgba(0,0,0,.15);
+    }
+    #headline { margin: 0 0 2px; font-size: 18px; font-weight: 700; }
+    #sub { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    #banner {
+      display: none; margin-top: 10px; padding: 8px 12px; border-radius: 10px; font-size: 13px;
+      background: #fbebc0; color: #7a5600;
+    }
+
+    #state {
+      position: absolute; inset: 0; z-index: 700; display: none; align-items: center; justify-content: center;
+      padding: 24px; text-align: center; background: #fff;
+    }
+    #state.show { display: flex; }
+    #state .box { max-width: 360px; }
+    #state h1 { margin: 0 0 8px; font-size: 22px; }
+    #state p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .marker {
+      width: 22px; height: 22px; border-radius: 50%; background: var(--yellow);
+      border: 4px solid var(--charcoal); box-shadow: 0 0 0 4px rgba(244,208,79,.45), 0 2px 6px rgba(0,0,0,.4);
+    }
+    .leaflet-container { font-family: inherit; }
+    .leaflet-bottom { bottom: 22px; } /* keep the attribution above the rounded footer */
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Road<span>2</span>Walk</div>
+    <div id="pill" class="pill" role="status"><span class="dot"></span><span id="pill-text">Loading</span></div>
+  </header>
+
+  <div id="map-wrap">
+    <div id="map" aria-label="Map showing the live position"></div>
+    <button id="recenter" type="button">Follow live position</button>
+    <div id="state" role="alert">
+      <div class="box"><h1 id="state-title"></h1><p id="state-text"></p></div>
+    </div>
+  </div>
+
+  <footer>
+    <p id="headline">Loading trip…</p>
+    <p id="sub"></p>
+    <div id="banner" role="status"></div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
+          integrity="sha256-XJrs/DDkVkUZ29zdzFOkGCJ9zHVo5hnpdi3c7HYJ7Uc=" crossorigin="anonymous"></script>
+  <script src="config.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var POLL_MS = 5000;
+    var $ = function (id) { return document.getElementById(id); };
+
+    // Every piece of server data is written with textContent, never innerHTML.
+    function setText(id, text) { $(id).textContent = text; }
+
+    function showState(title, text) {
+      setText('state-title', title);
+      setText('state-text', text);
+      $('state').classList.add('show');
+    }
+    function hideState() { $('state').classList.remove('show'); }
+
+    function setPill(kind, text) {
+      $('pill').className = 'pill' + (kind ? ' ' + kind : '');
+      setText('pill-text', text);
+    }
+
+    function banner(text) {
+      var el = $('banner');
+      if (text) { el.textContent = text; el.style.display = 'block'; } else { el.style.display = 'none'; }
+    }
+
+    function ago(date) {
+      var s = Math.max(0, Math.round((Date.now() - date.getTime()) / 1000));
+      if (s < 10) return 'just now';
+      if (s < 60) return s + ' seconds ago';
+      var m = Math.round(s / 60);
+      if (m < 60) return m + (m === 1 ? ' minute ago' : ' minutes ago');
+      var h = Math.round(m / 60);
+      if (h < 24) return h + (h === 1 ? ' hour ago' : ' hours ago');
+      return date.toLocaleString();
+    }
+
+    var token = new URLSearchParams(window.location.search).get('t') || '';
+    var cfg = window.R2W || {};
+    var configured = cfg.SUPABASE_URL && cfg.SUPABASE_KEY &&
+      cfg.SUPABASE_URL.indexOf('YOUR-PROJECT') === -1 && cfg.SUPABASE_KEY.indexOf('YOUR-') === -1;
+
+    if (!/^[A-Za-z0-9]{10,64}$/.test(token)) {
+      setPill('', 'No link');
+      setText('headline', 'No trip to show');
+      showState('This link is incomplete', 'Ask the person who shared it to send the full link again.');
+      return;
+    }
+    if (!configured) {
+      setPill('', 'Offline');
+      setText('headline', 'Viewer not configured');
+      showState('The viewer is not set up yet', 'The site owner still needs to add the Supabase settings to config.js.');
+      return;
+    }
+
+    // ---- map -------------------------------------------------------------
+    var map = L.map('map', { zoomControl: true, attributionControl: true }).setView([20.5937, 78.9629], 4);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    var line = L.polyline([], { color: '#474545', weight: 5, opacity: 0.85 }).addTo(map);
+    var marker = null;
+    var following = true;
+    var movingProgrammatically = false;
+    var fitted = false;
+
+    function moveMap(fn) {
+      movingProgrammatically = true;
+      fn();
+      setTimeout(function () { movingProgrammatically = false; }, 700);
+    }
+    map.on('dragstart zoomstart', function () {
+      if (movingProgrammatically) return;
+      following = false;
+      if (marker && trip && trip.is_active) $('recenter').style.display = 'block';
+    });
+    $('recenter').addEventListener('click', function () {
+      following = true;
+      $('recenter').style.display = 'none';
+      if (marker) moveMap(function () { map.setView(marker.getLatLng(), Math.max(map.getZoom(), 16)); });
+    });
+
+    // ---- data ------------------------------------------------------------
+    var trip = null;
+    var timer = null;
+    var failures = 0;
+
+    function load() {
+      fetch(cfg.SUPABASE_URL.replace(/\/+$/, '') + '/rest/v1/rpc/get_shared_trip', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': cfg.SUPABASE_KEY,
+          'Authorization': 'Bearer ' + cfg.SUPABASE_KEY
+        },
+        body: JSON.stringify({ p_token: token })
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      }).then(function (rows) {
+        failures = 0;
+        banner('');
+        if (!Array.isArray(rows) || rows.length === 0) {
+          trip = null;
+          setPill('', 'Unavailable');
+          setText('headline', 'Trip not available');
+          setText('sub', '');
+          showState('This link has expired or does not exist',
+            'Trip links stop working 24 hours after the trip ends. Ask for a new link if you still need to follow along.');
+          return;
+        }
+        hideState();
+        render(rows[0]);
+        schedule();
+      }).catch(function () {
+        failures += 1;
+        if (trip) {
+          banner('Connection problem. Retrying…');
+          schedule();
+        } else if (failures >= 3) {
+          setPill('', 'Offline');
+          setText('headline', 'Could not load the trip');
+          showState('Could not load the trip', 'Check your internet connection. We will keep trying.');
+          schedule();
+        } else {
+          schedule();
+        }
+      });
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      if (trip && !trip.is_active) return; // ended: nothing more to poll
+      timer = setTimeout(load, POLL_MS);
+    }
+
+    function render(t) {
+      trip = t;
+      var active = !!t.is_active;
+      setPill(active ? 'live' : 'ended', active ? 'Live' : 'Ended');
+
+      var name = (t.first_name && String(t.first_name).trim()) || 'Someone';
+      setText('headline', active ? name + ' is sharing a live trip' : name + '’s trip has ended');
+
+      var pts = Array.isArray(t.points) ? t.points : [];
+      var latlngs = [];
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        if (Array.isArray(p) && isFinite(p[0]) && isFinite(p[1])) latlngs.push([Number(p[0]), Number(p[1])]);
+      }
+      if (isFinite(t.last_latitude) && t.last_latitude !== null && isFinite(t.last_longitude) && t.last_longitude !== null) {
+        var last = [Number(t.last_latitude), Number(t.last_longitude)];
+        var tail = latlngs[latlngs.length - 1];
+        if (!tail || tail[0] !== last[0] || tail[1] !== last[1]) latlngs.push(last);
+      }
+      line.setLatLngs(latlngs);
+
+      var end = latlngs.length ? latlngs[latlngs.length - 1] : null;
+      if (end) {
+        if (!marker) {
+          marker = L.marker(end, {
+            icon: L.divIcon({ className: '', html: '<div class="marker"></div>', iconSize: [22, 22], iconAnchor: [11, 11] }),
+            keyboard: false
+          }).addTo(map);
+        } else {
+          marker.setLatLng(end);
+        }
+        if (!fitted) {
+          fitted = true;
+          moveMap(function () {
+            if (latlngs.length > 1) map.fitBounds(line.getBounds(), { padding: [40, 40], maxZoom: 17 });
+            else map.setView(end, 16);
+          });
+        } else if (following && active) {
+          moveMap(function () { map.panTo(end, { animate: true }); });
+        }
+      }
+      if (!active) {
+        $('recenter').style.display = 'none';
+        if (latlngs.length > 1) moveMap(function () { map.fitBounds(line.getBounds(), { padding: [40, 40], maxZoom: 17 }); });
+      }
+      updateSub();
+    }
+
+    function updateSub() {
+      if (!trip) return;
+      var parts = [];
+      if (trip.title && String(trip.title).trim()) parts.push(String(trip.title).trim());
+      var when = trip.is_active ? trip.last_at : (trip.ended_at || trip.last_at);
+      if (when) {
+        var d = new Date(when);
+        if (!isNaN(d.getTime())) {
+          parts.push((trip.is_active ? 'Updated ' : 'Ended ') + ago(d));
+          // Live but silent for a while: the phone may be offline or the app closed.
+          if (trip.is_active && Date.now() - d.getTime() > 10 * 60 * 1000 && !failures) {
+            banner('No recent update. The phone may be offline or the app was closed.');
+          } else if (!failures) {
+            banner('');
+          }
+        }
+      } else if (trip.is_active) {
+        parts.push('Waiting for the first location…');
+      }
+      setText('sub', parts.join(' · '));
+    }
+
+    setInterval(updateSub, 1000);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) load(); // refresh immediately when the tab comes back
+    });
+    load();
+  })();
+  </script>
+</body>
+</html>

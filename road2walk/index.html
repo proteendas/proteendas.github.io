@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Road2Walk</title>
+  <meta name="description" content="Road2Walk: vehicle tagging, parking and safety for workplaces and neighbourhoods.">
+  <style>
+    :root { --charcoal: #474545; --yellow: #f4d04f; --ink: #3b414b; --muted: #8c8c8c; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--charcoal); color: #fff; padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    main { max-width: 440px; width: 100%; }
+    h1 { margin: 0 0 8px; font-size: 32px; letter-spacing: -0.5px; }
+    h1 span { color: var(--yellow); }
+    p { line-height: 1.55; color: #e6e6e6; margin: 0 0 16px; }
+    .card { background: #fff; color: var(--ink); border-radius: 20px; padding: 24px; margin-top: 24px; }
+    .card p { color: var(--ink); }
+    a.btn {
+      display: block; text-align: center; text-decoration: none; font-weight: 600;
+      background: var(--yellow); color: var(--charcoal); padding: 16px; border-radius: 12px;
+    }
+    small { color: var(--muted); display: block; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Road<span>2</span>Walk</h1>
+    <p>Tag your vehicle with a QR code, find where it is parked, and let neighbours or colleagues reach you
+       about it, without ever sharing your phone number.</p>
+    <div class="card">
+      <p><strong>Got a link to follow someone's trip?</strong><br>
+         Open the full link you were sent. It looks like <code>…/trip.html?t=…</code>.
+         No app or account is needed.</p>
+      <small>Road2Walk does not use analytics or advertising cookies.</small>
+    </div>
+  </main>
+</body>
+</html>
