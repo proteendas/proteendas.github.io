@@ -1,0 +1,38 @@
+{
+  "name": "Road2Walk",
+  "identifier": "com.road2walk.source",
+  "subtitle": "Road2Walk for iPhone",
+  "description": "Official Road2Walk builds for AltStore and SideStore.",
+  "iconURL": "https://proteendas.github.io/road2walk/icon.png",
+  "website": "https://proteendas.github.io/road2walk/ios.html",
+  "tintColor": "1E88E5",
+  "apps": [
+    {
+      "name": "Road2Walk",
+      "bundleIdentifier": "com.road2walk.app",
+      "developerName": "Road2Walk",
+      "subtitle": "Tag, Track, and Triumph!",
+      "localizedDescription": "A vehicle-safety app. Put a QR tag on your windscreen and anyone can reach you about your vehicle without seeing your phone number.",
+      "iconURL": "https://proteendas.github.io/road2walk/icon.png",
+      "tintColor": "1E88E5",
+      "screenshotURLs": [],
+      "versions": [
+        {
+          "version": "1.2.0",
+          "buildVersion": "3",
+          "date": "2026-11-22T15:11:11Z",
+          "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/road2walk-v1.2.0-3/Road2Walk-1.2.0.ipa",
+          "size": 11079418,
+          "minOSVersion": "15.0",
+          "localizedDescription": "First iOS build"
+        }
+      ],
+      "version": "1.2.0",
+      "versionDate": "2026-11-22T15:11:11Z",
+      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/road2walk-v1.2.0-3/Road2Walk-1.2.0.ipa",
+      "size": 11079418,
+      "versionDescription": "First iOS build"
+    }
+  ],
+  "news": []
+}
