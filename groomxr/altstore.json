@@ -1,0 +1,38 @@
+{
+  "name": "GroomXR",
+  "identifier": "com.groomxr.source",
+  "subtitle": "GroomXR for iPhone",
+  "description": "Official GroomXR builds for AltStore and SideStore.",
+  "iconURL": "https://proteendas.github.io/groomxr/icon.png",
+  "website": "https://proteendas.github.io/groomxr/ios.html",
+  "tintColor": "326E88",
+  "apps": [
+    {
+      "name": "GroomXR",
+      "bundleIdentifier": "com.groomxr.app",
+      "developerName": "GroomXR",
+      "subtitle": "Your AI speaking coach",
+      "localizedDescription": "Practise pitches, interviews and talks in VR rooms and get scored feedback from an AI speaking coach.",
+      "iconURL": "https://proteendas.github.io/groomxr/icon.png",
+      "tintColor": "326E88",
+      "screenshotURLs": [],
+      "versions": [
+        {
+          "version": "1.0.0",
+          "buildVersion": "1",
+          "date": "2026-11-25T17:00:25Z",
+          "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.0-1/GroomXR-1.0.0.ipa",
+          "size": 19780771,
+          "minOSVersion": "15.0",
+          "localizedDescription": "First GroomXR release: VR practice rooms, AI speaking coach, performance dashboard."
+        }
+      ],
+      "version": "1.0.0",
+      "versionDate": "2026-11-25T17:00:25Z",
+      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.0-1/GroomXR-1.0.0.ipa",
+      "size": 19780771,
+      "versionDescription": "First GroomXR release: VR practice rooms, AI speaking coach, performance dashboard."
+    }
+  ],
+  "news": []
+}
