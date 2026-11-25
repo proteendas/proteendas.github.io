@@ -10,13 +10,22 @@
     {
       "name": "GroomXR",
       "bundleIdentifier": "com.groomxr.app",
-      "developerName": "GroomXR",
+      "developerName": "Proteen Das",
       "subtitle": "Your AI speaking coach",
       "localizedDescription": "Practise pitches, interviews and talks in VR rooms and get scored feedback from an AI speaking coach.",
       "iconURL": "https://proteendas.github.io/groomxr/icon.png",
       "tintColor": "326E88",
       "screenshotURLs": [],
       "versions": [
+        {
+          "version": "1.0.2",
+          "buildVersion": "3",
+          "date": "2026-11-25T20:17:50Z",
+          "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.2-3/GroomXR-1.0.2.ipa",
+          "size": 54874054,
+          "minOSVersion": "15.0",
+          "localizedDescription": "1.0.2: live AI panel with follow-ups, mock interview day, camera eye contact, realistic VR rooms, free voices, AI coach, drills, badges and mentor sharing."
+        },
         {
           "version": "1.0.0",
           "buildVersion": "1",
@@ -27,11 +36,11 @@
           "localizedDescription": "First GroomXR release: VR practice rooms, AI speaking coach, performance dashboard."
         }
       ],
-      "version": "1.0.0",
-      "versionDate": "2026-11-25T17:00:25Z",
-      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.0-1/GroomXR-1.0.0.ipa",
-      "size": 19780771,
-      "versionDescription": "First GroomXR release: VR practice rooms, AI speaking coach, performance dashboard."
+      "version": "1.0.2",
+      "versionDate": "2026-11-25T20:17:50Z",
+      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.2-3/GroomXR-1.0.2.ipa",
+      "size": 54874054,
+      "versionDescription": "1.0.2: live AI panel with follow-ups, mock interview day, camera eye contact, realistic VR rooms, free voices, AI coach, drills, badges and mentor sharing."
     }
   ],
   "news": []
