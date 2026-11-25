@@ -18,6 +18,15 @@
       "screenshotURLs": [],
       "versions": [
         {
+          "version": "1.0.3",
+          "buildVersion": "4",
+          "date": "2026-11-25T21:10:52Z",
+          "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.3-4/GroomXR-1.0.3.ipa",
+          "size": 54926129,
+          "minOSVersion": "15.0",
+          "localizedDescription": "Coach chats with saved history and formatted replies, reliable front-camera eye contact, landscape HUD, wall-mounted board, new-badge highlights, voice pack and plan card fixes."
+        },
+        {
           "version": "1.0.2",
           "buildVersion": "3",
           "date": "2026-11-25T20:17:50Z",
@@ -36,11 +45,11 @@
           "localizedDescription": "First GroomXR release: VR practice rooms, AI speaking coach, performance dashboard."
         }
       ],
-      "version": "1.0.2",
-      "versionDate": "2026-11-25T20:17:50Z",
-      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.2-3/GroomXR-1.0.2.ipa",
-      "size": 54874054,
-      "versionDescription": "1.0.2: live AI panel with follow-ups, mock interview day, camera eye contact, realistic VR rooms, free voices, AI coach, drills, badges and mentor sharing."
+      "version": "1.0.3",
+      "versionDate": "2026-11-25T21:10:52Z",
+      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/groomxr-v1.0.3-4/GroomXR-1.0.3.ipa",
+      "size": 54926129,
+      "versionDescription": "Coach chats with saved history and formatted replies, reliable front-camera eye contact, landscape HUD, wall-mounted board, new-badge highlights, voice pack and plan card fixes."
     }
   ],
   "news": []
