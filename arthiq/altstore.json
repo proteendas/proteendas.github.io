@@ -33,7 +33,7 @@
           "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/arthiq-v1.0.0-1/ArthIQ-1.0.0.ipa",
           "size": 14425148,
           "minOSVersion": "15.0",
-          "localizedDescription": "ArthIQ 1.0.0: interactive investing lessons, Kite-style practice terminal with virtual money, F&O simulator, Market Lens signals and the ArthIQ AI tutor."
+          "localizedDescription": "ArthIQ 1.0.0: interactive investing lessons, practice terminal with virtual money, F&O simulator, Market Lens signals and the ArthIQ AI tutor."
         }
       ],
       "version": "1.0.1",
