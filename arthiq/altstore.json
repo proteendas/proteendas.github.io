@@ -18,6 +18,15 @@
       "screenshotURLs": [],
       "versions": [
         {
+          "version": "1.0.1",
+          "buildVersion": "2",
+          "date": "2026-11-27T07:46:41Z",
+          "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/arthiq-v1.0.1-2/ArthIQ-1.0.1.ipa",
+          "size": 14516934,
+          "minOSVersion": "15.0",
+          "localizedDescription": "ArthIQ 1.0.1: faster charts, F&O and Market Lens, smarter per-stock signals, balanced news from many outlets, more reliable ArthIQ AI, accent colours in Appearance, and readability fixes."
+        },
+        {
           "version": "1.0.0",
           "buildVersion": "1",
           "date": "2026-11-27T06:01:31Z",
@@ -27,11 +36,11 @@
           "localizedDescription": "ArthIQ 1.0.0: interactive investing lessons, Kite-style practice terminal with virtual money, F&O simulator, Market Lens signals and the ArthIQ AI tutor."
         }
       ],
-      "version": "1.0.0",
-      "versionDate": "2026-11-27T06:01:31Z",
-      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/arthiq-v1.0.0-1/ArthIQ-1.0.0.ipa",
-      "size": 14425148,
-      "versionDescription": "ArthIQ 1.0.0: interactive investing lessons, Kite-style practice terminal with virtual money, F&O simulator, Market Lens signals and the ArthIQ AI tutor."
+      "version": "1.0.1",
+      "versionDate": "2026-11-27T07:46:41Z",
+      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/arthiq-v1.0.1-2/ArthIQ-1.0.1.ipa",
+      "size": 14516934,
+      "versionDescription": "ArthIQ 1.0.1: faster charts, F&O and Market Lens, smarter per-stock signals, balanced news from many outlets, more reliable ArthIQ AI, accent colours in Appearance, and readability fixes."
     }
   ],
   "news": []
