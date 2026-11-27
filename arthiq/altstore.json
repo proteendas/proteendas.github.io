@@ -1,0 +1,38 @@
+{
+  "name": "ArthIQ",
+  "identifier": "in.arthiq.source",
+  "subtitle": "ArthIQ for iPhone",
+  "description": "Official ArthIQ builds for AltStore and SideStore.",
+  "iconURL": "https://proteendas.github.io/arthiq/icon.png",
+  "website": "https://proteendas.github.io/arthiq/ios.html",
+  "tintColor": "0F9D58",
+  "apps": [
+    {
+      "name": "ArthIQ",
+      "bundleIdentifier": "in.arthiq.app",
+      "developerName": "Proteen Das",
+      "subtitle": "Learn to invest the Indian way",
+      "localizedDescription": "Interactive investing lessons for Indian markets, a Kite-style practice terminal with virtual money, on-device ML signals and the ArthIQ AI tutor.",
+      "iconURL": "https://proteendas.github.io/arthiq/icon.png",
+      "tintColor": "0F9D58",
+      "screenshotURLs": [],
+      "versions": [
+        {
+          "version": "1.0.0",
+          "buildVersion": "1",
+          "date": "2026-11-27T06:01:31Z",
+          "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/arthiq-v1.0.0-1/ArthIQ-1.0.0.ipa",
+          "size": 14425148,
+          "minOSVersion": "15.0",
+          "localizedDescription": "ArthIQ 1.0.0: interactive investing lessons, Kite-style practice terminal with virtual money, F&O simulator, Market Lens signals and the ArthIQ AI tutor."
+        }
+      ],
+      "version": "1.0.0",
+      "versionDate": "2026-11-27T06:01:31Z",
+      "downloadURL": "https://github.com/proteendas/proteendas.github.io/releases/download/arthiq-v1.0.0-1/ArthIQ-1.0.0.ipa",
+      "size": 14425148,
+      "versionDescription": "ArthIQ 1.0.0: interactive investing lessons, Kite-style practice terminal with virtual money, F&O simulator, Market Lens signals and the ArthIQ AI tutor."
+    }
+  ],
+  "news": []
+}
